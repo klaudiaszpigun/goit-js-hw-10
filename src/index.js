@@ -15,38 +15,26 @@ loader.classList.remove('hidden');
 // jeśli tak to automatycznie ukrywane jest ładowanie na ekranie
 try {
   // wyciągnąć dane z backendu
-  fetchBreeds()
-    // jeśli się to uda to
-    .then(data => {
-      // wygeneruj informacje o zdjęciu
-      renderBreeds(data);
-      // i ukryj ładowanie
-      loader.classList.add('hidden');
-    });
+  fetchBreeds().then(data => {
+    renderBreeds(data);
+    loader.classList.add('hidden');
+  });
 } catch (error) {
-  // jeśli wystąpił jakiś błąd to jest wyświetlany komunikat notify
   Notiflix.Notify.failure(
     'Oops! Something went wrong! Try reloading the page!'
   );
-  // i ukrywane jest ładowanie
   loader.classList.add('hidden');
 }
 
-// funkcja renderująca opcje wyboru
 const renderBreeds = breeds => {
   const markup = breeds
-    // breeds to obiekt z wszystkimi rasami z kórego pobierane są dwa pola, które później wstawiane są do kodu
     .map(({ name, id }) => `<option value="${id}">${name}</option>`)
-    // łączone w string
     .join('');
-  // i dodawane do kodu HTML
   breedSelectHtml.innerHTML = markup;
 };
 
 const renderCat = catData => {
-  // pierwszego obiektu z tablicy wartość właściwości url
   const url = catData[0].url;
-  // pierwszego obiektu z tablicy
   const description = catData[0].breeds[0].description;
   const temperament = catData[0].breeds[0].temperament;
   const name = catData[0].breeds[0].name;
@@ -59,7 +47,6 @@ const renderCat = catData => {
   `;
 };
 
-// przy naciśnięciu na wybranie rasy
 breedSelectHtml.addEventListener('change', event => {
   const breedId = event.target.value;
   loader.classList.remove('hidden');
