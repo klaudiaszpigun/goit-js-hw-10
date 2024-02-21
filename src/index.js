@@ -44,7 +44,9 @@ const renderBreeds = breeds => {
 };
 
 const renderCat = catData => {
+  // pierwszego obiektu z tablicy wartość właściwości url
   const url = catData[0].url;
+  // pierwszego obiektu z tablicy
   const description = catData[0].breeds[0].description;
   const temperament = catData[0].breeds[0].temperament;
   const name = catData[0].breeds[0].name;
@@ -79,3 +81,4 @@ breedSelectHtml.addEventListener('change', event => {
       loader.classList.add('hidden');
     });
 });
+//
