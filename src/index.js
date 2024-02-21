@@ -6,15 +6,10 @@ const errorHtml = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader-wrapper');
 
-// ukrywamy error
 errorHtml.classList.add('hidden');
-// uwidaczniamy ładowanie
 loader.classList.remove('hidden');
 
-// sprawdzanie czy generowanie informacji o zdjęciu się powiedzie
-// jeśli tak to automatycznie ukrywane jest ładowanie na ekranie
 try {
-  // wyciągnąć dane z backendu
   fetchBreeds().then(data => {
     renderBreeds(data);
     loader.classList.add('hidden');
