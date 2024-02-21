@@ -61,15 +61,10 @@ const renderCat = catData => {
 
 // przy naciśnięciu na wybranie rasy
 breedSelectHtml.addEventListener('change', event => {
-  // id rasy jest wartość elementu na który naciśniemy
   const breedId = event.target.value;
-  // wtedy ładowanie się pokazuje
   loader.classList.remove('hidden');
-  // w divie catInfo jest pusty string
   catInfo.innerHTML = '';
-  // wywołując funkcję która łaaduje informacje o zdjęciu, które zostało naciśnięte
   fetchCatByBreed(breedId)
-    // gdy wszystko się pobierze
     .then(catData => {
       renderCat(catData);
       loader.classList.add('hidden');
@@ -81,4 +76,3 @@ breedSelectHtml.addEventListener('change', event => {
       loader.classList.add('hidden');
     });
 });
-//
