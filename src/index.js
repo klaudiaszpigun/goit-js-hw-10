@@ -28,7 +28,7 @@ breedSelect.addEventListener('change', event => {
   loader.classList.remove('hidden');
   catInfo.innerHTML = '';
   fetchCatByBreed(catId)
-    .then(data => renderCat(data[0]))
+    .then(data => renderCat(data))
     .catch(error => {
       Notiflix.Notify.failure('Error checking cat:');
       loader.classList.add('hidden');
