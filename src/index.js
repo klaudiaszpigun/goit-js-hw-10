@@ -1,13 +1,15 @@
 import Notiflix from 'notiflix';
-import { fetchBreeds, fetchCatByBreed } from './cat-api';
+import { fetchBreeds, fetchImageByBreed } from './cat-api';
 
 const breedSelect = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader-wrapper');
 const error = document.querySelector('.error');
 
+// ukryj error
 error.classList.add('hidden');
 
+// spróbuj pokazać ładowanie, a później pobrać z serwera dane i wygenerować opcje w rozwijanym menu
 try {
   loader.classList.remove('hidden');
   fetchBreeds().then(data => renderSelect(data));
@@ -27,7 +29,7 @@ breedSelect.addEventListener('change', event => {
   const catId = event.target.value;
   loader.classList.remove('hidden');
   catInfo.innerHTML = '';
-  fetchCatByBreed(catId)
+  fetchImageByBreed(catId)
     .then(data => renderCat(data))
     .catch(error => {
       Notiflix.Notify.failure('Error checking cat:');
