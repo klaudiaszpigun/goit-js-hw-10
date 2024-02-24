@@ -1,32 +1,39 @@
 import Notiflix from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 
-const breedSelectHtml = document.querySelector('.breed-select');
-const errorHtml = document.querySelector('.error');
+const breedSelect = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader-wrapper');
+const error = document.querySelector('.error');
 
-errorHtml.classList.add('hidden');
-loader.classList.remove('hidden');
+error.classList.add('hidden');
 
 try {
-  fetchBreeds().then(data => {
-    renderBreeds(data);
-    loader.classList.add('hidden');
-  });
+  loader.classList.remove('hidden');
+  fetchBreeds().then(data => renderSelect(data));
 } catch (error) {
-  Notiflix.Notify.failure(
-    'Oops! Something went wrong! Try reloading the page!'
-  );
-  loader.classList.add('hidden');
+  console.log(error);
 }
 
-const renderBreeds = breeds => {
+const renderSelect = breeds => {
   const markup = breeds
     .map(({ name, id }) => `<option value="${id}">${name}</option>`)
     .join('');
-  breedSelectHtml.innerHTML = markup;
+  breedSelect.innerHTML = markup;
+  loader.classList.add('hidden');
 };
+
+breedSelect.addEventListener('change', event => {
+  const catId = event.target.value;
+  loader.classList.remove('hidden');
+  catInfo.innerHTML = '';
+  fetchCatByBreed(catId)
+    .then(data => renderCat(data[0]))
+    .catch(error => {
+      Notiflix.Notify.failure('Error checking cat:');
+      loader.classList.add('hidden');
+    });
+});
 
 const renderCat = catData => {
   const url = catData[0].url;
@@ -40,21 +47,5 @@ const renderCat = catData => {
     <p>${description}</p>
     <p><strong>Temperament:</strong> ${temperament}</p>
   `;
+  loader.classList.add('hidden');
 };
-
-breedSelectHtml.addEventListener('change', event => {
-  const breedId = event.target.value;
-  loader.classList.remove('hidden');
-  catInfo.innerHTML = '';
-  fetchCatByBreed(breedId)
-    .then(catData => {
-      renderCat(catData);
-      loader.classList.add('hidden');
-    })
-    .catch(error => {
-      Notiflix.Notify.failure(
-        'Oops! Something went wrong! Try reloading the page!'
-      );
-      loader.classList.add('hidden');
-    });
-});
